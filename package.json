@@ -1,5 +1,8 @@
 {
-  "name": "friendzone",
+  "name": "@zayminmaw/friendzone",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/zayminmaw"
+  },
   "version": "0.0.1",
   "description": "The boundary no events can cross.",
   "scripts": {
