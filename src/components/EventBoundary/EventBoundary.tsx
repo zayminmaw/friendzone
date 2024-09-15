@@ -24,33 +24,22 @@ const eventCategories = {
 
 interface EventBoundaryProps {
   children: React.ReactNode;
-  stop?: EventsCategory[];
-  logID?: string | undefined;
-  trace?: (eventType: string, event: Event) => void;
+  trace: EventsCategory[];
+  logName?: string | undefined;
+  onEvent?: (eventType: string, event: Event) => void | undefined;
 }
 
 const EventBoundary: React.FC<EventBoundaryProps> = ({
   children,
-  logID,
-  stop = [],
-  trace,
+  logName,
+  trace = [],
+  onEvent,
 }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
 
   const handleEvent = (event: Event) => {
-    event.stopPropagation();
-
-    if (
-      event.type === "submit" ||
-      event.type === "click" ||
-      event.type === "contextmenu"
-    ) {
-      event.preventDefault();
-    }
-
-    logID && console.log(`Event ${logID} triggered ${event.type}`, event);
-
-    trace?.(event.type, event);
+    logName && console.log(`${logName}: ${event.type}`, event);
+    onEvent?.(event.type, event);
   };
 
   useEffect(() => {
@@ -58,7 +47,7 @@ const EventBoundary: React.FC<EventBoundaryProps> = ({
 
     if (divElement) {
       const eventSet = new Set<string>();
-      stop.forEach((type) => {
+      trace.forEach((type) => {
         const eventList = eventCategories[type as keyof typeof eventCategories];
         eventList?.forEach((eventType) => eventSet.add(eventType));
       });
