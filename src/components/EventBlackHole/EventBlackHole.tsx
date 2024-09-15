@@ -1,45 +1,41 @@
 import React, { useEffect, useRef } from "react";
-import {
-  clipboardEvents,
-  dragEvents,
-  formEvents,
-  keyboardEvents,
-  mediaEvents,
-  mouseEvents,
-  pointerEvents,
-  windowEvents,
-} from "../../constants";
+import { eventCategories } from "../../constants";
 import { EventCategories } from "../../types";
 
-const eventCategories = {
-  clipboard: clipboardEvents,
-  drag: dragEvents,
-  form: formEvents,
-  keyboard: keyboardEvents,
-  media: mediaEvents,
-  mouse: mouseEvents,
-  pointer: pointerEvents,
-  window: windowEvents,
-};
-
-interface EventBoundaryProps {
+interface EventBlackHoleProps {
   children: React.ReactNode;
-  trace: EventCategories[];
+  absorbOnly?: EventCategories[] | undefined;
   logName?: string | undefined;
-  onEvent?: (eventType: string, event: Event) => void | undefined;
 }
 
-const EventBoundary: React.FC<EventBoundaryProps> = ({
+const EventBlackHole: React.FC<EventBlackHoleProps> = ({
   children,
+  absorbOnly = [
+    "clipboard",
+    "drag",
+    "form",
+    "keyboard",
+    "media",
+    "mouse",
+    "pointer",
+    "window",
+  ],
   logName,
-  trace = [],
-  onEvent,
 }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
 
   const handleEvent = (event: Event) => {
+    event.stopPropagation();
+
+    if (
+      event.type === "submit" ||
+      event.type === "click" ||
+      event.type === "contextmenu"
+    ) {
+      event.preventDefault();
+    }
+
     logName && console.log(`${logName}: ${event.type}`, event);
-    onEvent?.(event.type, event);
   };
 
   useEffect(() => {
@@ -47,7 +43,7 @@ const EventBoundary: React.FC<EventBoundaryProps> = ({
 
     if (divElement) {
       const eventSet = new Set<string>();
-      trace.forEach((type) => {
+      absorbOnly.forEach((type) => {
         const eventList = eventCategories[type as keyof typeof eventCategories];
         eventList?.forEach((eventType) => eventSet.add(eventType));
       });
@@ -62,9 +58,9 @@ const EventBoundary: React.FC<EventBoundaryProps> = ({
         });
       };
     }
-  }, [stop]);
+  }, []);
 
   return <div ref={divRef}>{children}</div>;
 };
 
-export default EventBoundary;
+export default EventBlackHole;

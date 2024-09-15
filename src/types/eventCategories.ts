@@ -1,4 +1,4 @@
-export type EventsCategory =
+export type EventCategories =
   | "clipboard"
   | "drag"
   | "form"

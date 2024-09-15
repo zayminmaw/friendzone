@@ -6,3 +6,4 @@ export * from "./pointerEvents";
 export * from "./dragEvents";
 export * from "./clipboardEvents";
 export * from "./mediaEvents";
+export * from "./eventCategories";
