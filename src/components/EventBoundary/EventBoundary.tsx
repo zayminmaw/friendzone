@@ -26,12 +26,14 @@ interface EventBoundaryProps {
   children: React.ReactNode;
   stop?: EventsCategory[];
   logID?: string | undefined;
+  trace: (eventType: string, event: Event) => void;
 }
 
 const EventBoundary: React.FC<EventBoundaryProps> = ({
   children,
   logID,
   stop = ["mouse", "keyboard"],
+  trace,
 }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
 
@@ -47,6 +49,8 @@ const EventBoundary: React.FC<EventBoundaryProps> = ({
     }
 
     logID && console.log(`Event ${logID} triggered ${event.type}`, event);
+
+    trace?.(event.type, event);
   };
 
   useEffect(() => {
