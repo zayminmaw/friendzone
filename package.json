@@ -1,6 +1,6 @@
 {
   "name": "friendzone",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The boundary no events can cross.",
   "scripts": {
     "rollup": "rollup -c"
