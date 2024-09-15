@@ -24,7 +24,7 @@ const eventCategories = {
 
 interface EventBoundaryProps {
   children: React.ReactNode;
-  stop: EventsCategory[];
+  stop?: EventsCategory[];
   logID?: string | undefined;
 }
 
@@ -50,7 +50,7 @@ const EventBoundary: React.FC<EventBoundaryProps> = ({
   };
 
   useEffect(() => {
-    const divElement = divRef.current;
+    const divElement = divRef?.current;
 
     if (divElement) {
       const eventSet = new Set<string>();
