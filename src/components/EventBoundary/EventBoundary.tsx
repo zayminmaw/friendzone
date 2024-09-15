@@ -26,7 +26,7 @@ interface EventBoundaryProps {
   children: React.ReactNode;
   stop?: EventsCategory[];
   logID?: string | undefined;
-  trace: (eventType: string, event: Event) => void;
+  trace?: (eventType: string, event: Event) => void;
 }
 
 const EventBoundary: React.FC<EventBoundaryProps> = ({
