@@ -32,7 +32,7 @@ interface EventBoundaryProps {
 const EventBoundary: React.FC<EventBoundaryProps> = ({
   children,
   logID,
-  stop = ["mouse", "keyboard"],
+  stop = [],
   trace,
 }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
