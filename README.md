@@ -117,7 +117,6 @@ function App() {
       }}
     >
       <OnClickBoundary>
-        {" "}
         // On click boundary will prevent parent from getting triggered
         <div
           style={{
